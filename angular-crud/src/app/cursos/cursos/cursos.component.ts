@@ -13,7 +13,7 @@ import { ErrorDialogComponent } from 'src/app/shared/error-dialog/error-dialog.c
 export class CursosComponent {
 
   cursos$: Observable<Curso[]>;
-  displayedColumns = ['name', 'category'];
+  displayedColumns = ['_id', 'name', 'category'];
 
   constructor(
     private cursosService: CursosService,
