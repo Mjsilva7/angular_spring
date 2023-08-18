@@ -13,8 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class CursosComponent {
 
-  cursos$: Observable<Curso[]>;
-  displayedColumns = ['_id', 'name', 'category','actions'];
+  cursos$: Observable<Curso[]>;  
 
   constructor(
     private cursosService: CursosService,
