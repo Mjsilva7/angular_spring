@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { CursosService } from '../services/cursos.service';
+import { CursosService } from '../../services/cursos.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 

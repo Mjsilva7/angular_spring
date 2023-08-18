@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Curso } from '../model/curso';
-import { CursosService } from '../services/cursos.service';
+import { Curso } from '../../model/curso';
+import { CursosService } from '../../services/cursos.service';
 import { Observable, catchError, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from 'src/app/shared/error-dialog/error-dialog.component';

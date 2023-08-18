@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Curso } from '../model/curso';
+import { Curso } from '../../model/curso';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
