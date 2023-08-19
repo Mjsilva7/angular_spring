@@ -40,4 +40,8 @@ export class CursosComponent {
     this.router.navigate(['new'], {relativeTo: this.routeActive});
   }
 
+  onEdit(curso: Curso) {
+    this.router.navigate(['edit', curso._id], {relativeTo: this.routeActive});
+  }
+
 }
