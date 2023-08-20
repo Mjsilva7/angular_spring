@@ -14,13 +14,13 @@ import { CursosListaComponent } from './components/cursos-lista/cursos-lista.com
   declarations: [
     CursosComponent,
     CursoFormComponent,
-    CursosListaComponent
+    CursosListaComponent,
   ],
   imports: [
     CommonModule,
     CursosRoutingModule,
-    ImportMaterialModule, 
-    SharedModule, 
+    ImportMaterialModule,
+    SharedModule,
     ReactiveFormsModule
   ]
 })
