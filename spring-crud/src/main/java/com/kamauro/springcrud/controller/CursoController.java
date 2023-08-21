@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kamauro.springcrud.model.Curso;
-import com.kamauro.springcrud.repository.CursoRepository;
+import com.kamauro.springcrud.service.CursoService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -27,20 +28,21 @@ import jakarta.validation.constraints.Positive;
 @Validated
 public class CursoController {
 
-    private final CursoRepository cursoRepository;
+    private final CursoService cursoService;
 
-    public CursoController(CursoRepository cursoRepository) {
-        this.cursoRepository = cursoRepository;
+    public CursoController(CursoService cursoService) {
+        
+        this.cursoService = cursoService;
     }
 
     @GetMapping
-    public List<Curso> lista() {
-        return cursoRepository.findAll();
+    public @ResponseBody List<Curso> lista() {
+        return cursoService.lista();
     }  
     
     @GetMapping("/{id}")
     public ResponseEntity<Curso> buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
-        return cursoRepository.findById(id)
+        return cursoService.buscarPorId(id)
                     .map(record -> ResponseEntity.ok().body(record))
                     .orElse(ResponseEntity.notFound().build());
     }
@@ -48,7 +50,7 @@ public class CursoController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Curso create(@RequestBody @Valid Curso curso) {
-        return cursoRepository.save(curso);
+        return cursoService.create(curso);
     }    
     //Outra maneira de fazer o post caso precise manusear dados com cabeçalho e outros
     // @PostMapping
@@ -58,24 +60,18 @@ public class CursoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Curso> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso) {
-        return cursoRepository.findById(id)
-                    .map(record -> {
-                        record.setName(curso.getName());
-                        record.setCategory(curso.getCategory());
-                        Curso updated = cursoRepository.save(record);
-                        return ResponseEntity.ok().body(updated);
-                    })
+        return cursoService.update(id, curso)
+                    .map(record -> ResponseEntity.ok().body(record))
                     .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-        return cursoRepository.findById(id)
-                    .map(record -> {
-                        cursoRepository.deleteById(id);
-                        return ResponseEntity.noContent().<Void>build();
-                    })
-                    .orElse(ResponseEntity.notFound().build());
+        if(cursoService.delete(id)) {
+            return ResponseEntity.noContent().<Void>build();
+        }
+            return ResponseEntity.notFound().build();
+                    
 
     }
    
