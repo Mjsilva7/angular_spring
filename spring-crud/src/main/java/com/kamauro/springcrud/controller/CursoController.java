@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kamauro.springcrud.model.Curso;
 import com.kamauro.springcrud.repository.CursoRepository;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 @RestController
 @RequestMapping("/api/cursos")
+@Validated
 public class CursoController {
 
     private final CursoRepository cursoRepository;
@@ -33,7 +39,7 @@ public class CursoController {
     }  
     
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> buscarPorId(@PathVariable("id") Long id) {
+    public ResponseEntity<Curso> buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
         return cursoRepository.findById(id)
                     .map(record -> ResponseEntity.ok().body(record))
                     .orElse(ResponseEntity.notFound().build());
@@ -41,7 +47,7 @@ public class CursoController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Curso create(@RequestBody Curso curso) {
+    public Curso create(@RequestBody @Valid Curso curso) {
         return cursoRepository.save(curso);
     }    
     //Outra maneira de fazer o post caso precise manusear dados com cabeçalho e outros
@@ -51,7 +57,7 @@ public class CursoController {
     // }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> update(@PathVariable Long id, @RequestBody Curso curso) {
+    public ResponseEntity<Curso> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso) {
         return cursoRepository.findById(id)
                     .map(record -> {
                         record.setName(curso.getName());
@@ -63,7 +69,7 @@ public class CursoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
         return cursoRepository.findById(id)
                     .map(record -> {
                         cursoRepository.deleteById(id);

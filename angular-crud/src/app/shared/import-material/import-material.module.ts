@@ -11,14 +11,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-
-
-
 @NgModule({
-  
+
   exports: [
-    MatTableModule,  
-    MatCardModule,  
+    MatTableModule,
+    MatCardModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatDialogModule,
@@ -27,7 +24,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatSnackBarModule  
+    MatSnackBarModule
   ]
 })
 export class ImportMaterialModule { }

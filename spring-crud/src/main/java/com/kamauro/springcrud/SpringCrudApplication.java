@@ -21,7 +21,7 @@ public class SpringCrudApplication {
 			cursoRepository.deleteAll();
 			Curso c = new Curso();
 			c.setName("Angular com Spring");
-			c.setCategory("front-end");
+			c.setCategory("Front-end");
 			cursoRepository.save(c);
 
 		};
