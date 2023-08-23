@@ -41,10 +41,8 @@ public class CursoController {
     }  
     
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
-        return cursoService.buscarPorId(id)
-                    .map(record -> ResponseEntity.ok().body(record))
-                    .orElse(ResponseEntity.notFound().build());
+    public Curso buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
+        return cursoService.buscarPorId(id);
     }
 
     @PostMapping
@@ -59,20 +57,14 @@ public class CursoController {
     // }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso) {
-        return cursoService.update(id, curso)
-                    .map(record -> ResponseEntity.ok().body(record))
-                    .orElse(ResponseEntity.notFound().build());
+    public Curso update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso) {
+        return cursoService.update(id, curso);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-        if(cursoService.delete(id)) {
-            return ResponseEntity.noContent().<Void>build();
-        }
-            return ResponseEntity.notFound().build();
-                    
-
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable @NotNull @Positive Long id) {
+        cursoService.delete(id);
     }
    
 }

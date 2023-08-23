@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.kamauro.springcrud.exception.RecordNotFoundException;
 import com.kamauro.springcrud.model.Curso;
 import com.kamauro.springcrud.repository.CursoRepository;
 
@@ -28,30 +29,26 @@ public class CursoService {
         return cursoRepository.findAll();
     } 
 
-    public Optional<Curso> buscarPorId(@NotNull @Positive Long id) {
-        return cursoRepository.findById(id);
+    public Curso buscarPorId(@NotNull @Positive Long id) {
+        return cursoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Curso create(@Valid Curso curso) {
         return cursoRepository.save(curso);
     } 
 
-    public Optional<Curso> update(@NotNull @Positive Long id, @Valid Curso curso) {
+    public Curso update(@NotNull @Positive Long id, @Valid Curso curso) {
         return cursoRepository.findById(id)
                     .map(record -> {
                         record.setName(curso.getName());
                         record.setCategory(curso.getCategory());                        
                         return cursoRepository.save(record);
-                    });
+                    }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public boolean delete(@PathVariable @NotNull @Positive Long id) {
-        return cursoRepository.findById(id)
-                    .map(record -> {
-                        cursoRepository.deleteById(id);
-                        return true;
-                    })
-                    .orElse(false);
+    public void delete(@PathVariable @NotNull @Positive Long id) {
+        cursoRepository.delete(cursoRepository.findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(id)));
 
     }
 }
