@@ -3,7 +3,6 @@ package com.kamauro.springcrud.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kamauro.springcrud.model.Curso;
+import com.kamauro.springcrud.dto.CursoDTO;
 import com.kamauro.springcrud.service.CursoService;
 
 import jakarta.validation.Valid;
@@ -36,29 +35,24 @@ public class CursoController {
     }
 
     @GetMapping
-    public @ResponseBody List<Curso> lista() {
+    public @ResponseBody List<CursoDTO> lista() {
         return cursoService.lista();
     }  
     
     @GetMapping("/{id}")
-    public Curso buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
+    public CursoDTO buscarPorId(@PathVariable("id") @NotNull @Positive Long id) {
         return cursoService.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Curso create(@RequestBody @Valid Curso curso) {
-        return cursoService.create(curso);
-    }    
-    //Outra maneira de fazer o post caso precise manusear dados com cabeçalho e outros
-    // @PostMapping
-    // public ResponseEntity<Curso> create(@RequestBody Curso curso) {
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(cursoRepository.save(curso));
-    // }
+    public CursoDTO create(@RequestBody @Valid CursoDTO cursoDTO) {
+        return cursoService.create(cursoDTO);
+    }  
 
     @PutMapping("/{id}")
-    public Curso update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Curso curso) {
-        return cursoService.update(id, curso);
+    public CursoDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid CursoDTO cursoDTO) {
+        return cursoService.update(id, cursoDTO);
     }
 
     @DeleteMapping("/{id}")
