@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.kamauro.springcrud.enums.Category;
 import com.kamauro.springcrud.model.Curso;
 import com.kamauro.springcrud.repository.CursoRepository;
 
@@ -15,16 +16,16 @@ public class SpringCrudApplication {
 		SpringApplication.run(SpringCrudApplication.class, args);
 	}
 
-	// @Bean
-	// CommandLineRunner initDatabase(CursoRepository cursoRepository) {
-	// 	return args -> {
-	// 		cursoRepository.deleteAll();
-	// 		Curso c = new Curso();
-	// 		c.setName("Angular com Spring");
-	// 		c.setCategory("Front-end");
-	// 		cursoRepository.save(c);
+	@Bean
+	CommandLineRunner initDatabase(CursoRepository cursoRepository) {
+		return args -> {
+			cursoRepository.deleteAll();
+			Curso c = new Curso();
+			c.setName("Angular com Spring");
+			c.setCategory(Category.FRONT_END);
+			cursoRepository.save(c);
 
-	// 	};
-	// }
+		};
+	}
 
 }

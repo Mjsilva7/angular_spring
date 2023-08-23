@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kamauro.springcrud.dto.CursoDTO;
 import com.kamauro.springcrud.dto.mapper.CursoMapper;
@@ -49,12 +48,12 @@ public class CursoService {
         return cursoRepository.findById(id)
                     .map(record -> {
                         record.setName(cursoDTO.name());
-                        record.setCategory(cursoDTO.category());                        
+                        record.setCategory(cursoMapper.convertCategoryValues(cursoDTO.category()));                        
                         return cursoMapper.toDto(cursoRepository.save(record));
                     }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public void delete(@PathVariable @NotNull @Positive Long id) {
+    public void delete(@NotNull @Positive Long id) {
         cursoRepository.delete(cursoRepository.findById(id)
             .orElseThrow(() -> new RecordNotFoundException(id)));
 
