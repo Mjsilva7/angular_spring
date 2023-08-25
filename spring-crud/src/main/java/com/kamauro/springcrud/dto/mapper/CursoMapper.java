@@ -1,7 +1,11 @@
 package com.kamauro.springcrud.dto.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
+import com.kamauro.springcrud.dto.AulaDTO;
 import com.kamauro.springcrud.dto.CursoDTO;
 import com.kamauro.springcrud.enums.Category;
 import com.kamauro.springcrud.model.Curso;
@@ -13,7 +17,17 @@ public class CursoMapper {
         if(curso == null) {
             return null;
         }
-        return new CursoDTO(curso.getId(), curso.getName(), curso.getCategory().getValue());
+        List<AulaDTO> aulasDto = curso.getAulas()
+            .stream()
+            .map(aula -> new AulaDTO(aula.getId(), 
+                                     aula.getName(), 
+                                     aula.getUrlYoutube()))
+            .collect(Collectors.toList());
+
+        return new CursoDTO(curso.getId(), 
+                            curso.getName(), 
+                            curso.getCategory().getValue(),
+                            aulasDto);
     }
 
      public Curso toEntity(CursoDTO cursoDTO) {

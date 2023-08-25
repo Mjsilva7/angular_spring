@@ -56,6 +56,6 @@ public class Curso {
     @Column(length = 10, nullable = false)
     private  Status status = Status.ACTIVE;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "curso")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Aula> aulas = new ArrayList<>();
 }

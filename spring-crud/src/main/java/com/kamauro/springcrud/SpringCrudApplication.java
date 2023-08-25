@@ -30,6 +30,13 @@ public class SpringCrudApplication {
 			a.setUrlYoutube("watch?v=1");
 			a.setCurso(c);
 			c.getAulas().add(a);
+
+			Aula a1 = new Aula();
+			a1.setName("Angular");
+			a1.setUrlYoutube("watch?v=2");
+			a1.setCurso(c);
+
+			c.getAulas().add(a1);
 			cursoRepository.save(c);
 
 		};
