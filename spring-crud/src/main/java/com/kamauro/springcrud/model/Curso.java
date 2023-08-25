@@ -1,5 +1,8 @@
 package com.kamauro.springcrud.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
@@ -10,12 +13,14 @@ import com.kamauro.springcrud.enums.Status;
 import com.kamauro.springcrud.enums.converters.CategoryConverter;
 import com.kamauro.springcrud.enums.converters.StatusConverter;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,4 +55,7 @@ public class Curso {
     @Convert(converter = StatusConverter.class)
     @Column(length = 10, nullable = false)
     private  Status status = Status.ACTIVE;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "curso")
+    private List<Aula> aulas = new ArrayList<>();
 }
