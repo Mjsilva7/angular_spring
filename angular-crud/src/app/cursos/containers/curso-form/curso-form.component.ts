@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { CursosService } from '../../services/cursos.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Curso } from '../../model/curso';
+import { Aula } from '../../model/aula';
 
 @Component({
   selector: 'app-curso-form',
@@ -13,11 +14,7 @@ import { Curso } from '../../model/curso';
 })
 export class CursoFormComponent {
 
-  form = this.formBuilder.group({
-    _id: [''],
-    name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-    category: ['', [Validators.required]]
-  });
+  form!: FormGroup;
 
   constructor(private formBuilder: NonNullableFormBuilder,
     private service: CursosService,
@@ -26,11 +23,46 @@ export class CursoFormComponent {
     private route: ActivatedRoute
     ) {
       const curso: Curso = this.route.snapshot.data['curso'];
-      this.form.setValue({
-        _id: curso._id,
-        name: curso.name,
-        category: curso.category
-      })
+      this.form = this.formBuilder.group({
+          _id: [curso._id],
+          name: [curso.name, [Validators.required,
+                      Validators.minLength(5),
+                      Validators.maxLength(100)]],
+          category: [curso.category, [Validators.required]],
+          aulas: this.formBuilder.array(this.obterAulas(curso))
+        });
+    }
+
+    private obterAulas(curso: Curso) {
+      const aulas = [];
+      if(curso?.aulas) {
+        curso.aulas.forEach(aula => aulas.push(this.criarAula(aula)));
+      } else {
+        aulas.push(this.criarAula());
+      }
+      return aulas;
+    }
+
+    private criarAula(aula: Aula = {id: '', name: '', urlYoutube: ''}) {
+     return this.formBuilder.group({
+        id: [aula.id],
+        name: [aula.name],
+        urlYoutube: [aula.urlYoutube]
+      });
+    }
+
+    getAulasFormArray() {
+      return (<UntypedFormArray>this.form.get('aulas')).controls;
+    }
+
+    addNovaAula() {
+      const aulas = this.form.get('aulas') as UntypedFormArray;
+      aulas.push(this.criarAula());
+    }
+
+    removerAula(index: number) {
+      const aula = this.form.get('aulas') as UntypedFormArray;
+      aula.removeAt(index);
     }
 
   onSubmit() {
